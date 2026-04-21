@@ -1,16 +1,16 @@
 from flask import Flask, jsonify
-from sensorReader import auslesen
+from sensorReader import read
 
-# Flask-App erstellen
+# create Flask-App
 app = Flask(__name__)
 
 @app.route('/sensor_data', methods=['GET'])
 def get_sensor_data():
-    """Gibt Temperatur und Luftfeuchtigkeit als JSON zurück."""
-    temperature, humidity = auslesen()
+    """Returns the current temperature and humidity readings from the DHT22 sensor."""
+    temperature, humidity = read()
     
     if temperature is None or humidity is None:
-        return jsonify({'error': 'Fehler beim Abrufen der Sensordaten'}), 500
+        return jsonify({'error': 'Error reading sensor data.'}), 500
 
     return jsonify({'temperature': temperature, 'humidity': humidity})
 
